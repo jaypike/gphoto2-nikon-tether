@@ -22,15 +22,15 @@ case "$ACTION" in
 		#echo "$self: START"
 		;;
 	download)
-		ext=$(echo $ARGUMENT | cut -d. -f2)
-		name=$(echo $ARGUMENT | cut -d. -f1)
-		capturetime=$(/opt/local/bin/exif -t 0x9003 $ARGUMENT | grep Value: | sed 's/[ :]//g' | sed 's/Value//')
-		camera=$(/opt/local/bin/exif -t 0x0110 $ARGUMENT | grep Value: | sed 's/[ :]//g' | sed 's/Value//' | sed 's/NIKON/Nikon-/')
+		ext=$(echo "$ARGUMENT" | cut -d. -f2)
+		name=$(echo "$ARGUMENT" | cut -d. -f1)
+		capturetime=$(/opt/local/bin/exif -t 0x9003 "$ARGUMENT" | grep Value: | sed 's/[ :]//g' | sed 's/Value//')
+		camera=$(/opt/local/bin/exif -t 0x0110 "$ARGUMENT" | grep Value: | sed 's/[ :]//g' | sed 's/Value//' | sed 's/NIKON/Nikon-/')
 		new=$capturetime.$camera.$name.$ext
 		echo "$self: DOWNLOADING to $directory/$new"
-		mv $ARGUMENT $directory/$new
-		chmod a=r,ug+w $directory/$new
-		open -R $directory/$new
+		#/opt/local/bin/convert $ARGUMENT -quality 75 -compress JPEG2000 $directory/$new && chmod a=r,ug+w $directory/$new && open -R $directory/$new &
+		/opt/local/bin/convert $ARGUMENT -quality 75 -compress JPEG2000 $directory/$new && chmod a=r,ug+w $directory/$new && rm $ARGUMENT && open -R $directory/$new &
+#		mv "$ARGUMENT" $directory/$new
 		;;
 	stop)
 		#echo "$self: STOP"

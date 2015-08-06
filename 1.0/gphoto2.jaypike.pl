@@ -23,7 +23,7 @@ my $pgrep_command				= '/usr/bin/pgrep';
 
 # Main Subroutine (top down)
 if ( -x $gphoto2_command ) {
-	system ( "sudo killall -9 PTPCamera" );
+	system ( "sudo pkill -9 -f usbd usbmuxd USBAgent PTPCamera" );
 
 	# Lets get a list of the current cameras
 	open $filehandle, "$gphoto2_command --auto-detect |" or die "Error executing command: $gphoto2_command! $!\n";
