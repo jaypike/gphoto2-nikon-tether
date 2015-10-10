@@ -53,6 +53,9 @@ if ( -x $gphoto2_command ) {
 	
 	$offset = -$offset if ($sign eq '-');
 
+# Having TZ issues with newer Nikons - THey like to be set to GMT
+$offset=0;
+
 	foreach my $usbid ( sort keys %{ $hash{'device'} } ) {
 		open $filehandle, "$pgrep_command -f $usbid | wc -l |" or die "Error running pgrep! $!";
 
@@ -93,7 +96,7 @@ if ( -x $gphoto2_command ) {
 
 				print "Adjusting camera time by $adjust seconds for $usbid\n";
 				print "Offset: $offset, time $time and adjtime: $t and lagtime: $lagtime\n";
-	
+
 				system("$gphoto2_command --port $usbid --set-config /main/settings/datetime=$t");
 			}
 
